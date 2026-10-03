@@ -1,0 +1,10 @@
+# Environment files
+.env.dev
+.env.prod
+.env.prod.db
+
+# Python virtual environment
+env/
+venv/
+__pycache__/
+*.pyc
