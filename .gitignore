@@ -8,3 +8,9 @@ env/
 venv/
 __pycache__/
 *.pyc
+
+# Block uploaded media files from being tracked
+services/web/project/media/*
+
+# Except the .gitkeep file itself
+!services/web/project/media/.gitkeep
