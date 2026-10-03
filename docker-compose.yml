@@ -7,11 +7,8 @@ services:
       - ./services/web:/usr/src/app
     ports:
       - 1169:5000
-    environment:
-      - FLASK_APP=project/__init__.py
-      - FLASK_DEBUG=1
-      - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgresql+psycopg2://hello_flask:hello_flask@db:5432/hello_flask_dev
+    env_file:
+      - .env.dev
     depends_on:
       - db
 
@@ -19,10 +16,8 @@ services:
     image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=hello_flask
-      - POSTGRES_PASSWORD=hello_flask
-      - POSTGRES_DB=hello_flask_dev
+    env_file:
+      - .env.dev
 
 volumes:
   postgres_data:
