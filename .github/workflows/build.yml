@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dev-build:
+    name: Build development stack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create .env.dev from example (CI-only throwaway credentials)
+        run: |
+          sed -e 's/PLACEHOLDER_USER/ci_user/g' \
+              -e 's/PLACEHOLDER_PASSWORD/ci_password/g' \
+              -e 's/PLACEHOLDER_DB_NAME/ci_db/g' \
+              .env.dev.example > .env.dev
+
+      - name: Build images
+        run: docker compose build
+
+      - name: Start services
+        run: docker compose up -d
+
+      - name: Wait for web service to respond
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:1169/ > /dev/null; then
+              echo "Web service is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Web service did not become ready in time"
+          docker compose logs
+          exit 1
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
