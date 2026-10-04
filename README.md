@@ -142,7 +142,7 @@ The `web` container waits for Postgres, drops and recreates the tables, then sta
 | http://localhost:1169/ | `{"hello": "world"}` |
 | http://localhost:1169/static/hello.txt | `hi!` |
 | http://localhost:1169/upload | HTML upload form |
-| http://localhost:1169/media/`<filename>` | the file you uploaded |
+| http://localhost:1169/media/ `<filename>` | the file you uploaded |
 
 Optional — insert a sample user and inspect the database (substitute your own user/db name):
 
@@ -173,7 +173,7 @@ Gunicorn listens only on the internal Docker network; Nginx is the single public
 | http://localhost:1169/ | Nginx → Gunicorn → Flask |
 | http://localhost:1169/static/hello.txt | Nginx directly (`static_volume`) |
 | http://localhost:1169/upload | Nginx → Gunicorn → Flask |
-| http://localhost:1169/media/`<filename>` | Nginx directly (`media_volume`) |
+| http://localhost:1169/media/ `<filename>` | Nginx directly (`media_volume`) |
 
 Tear down:
 
